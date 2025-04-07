@@ -257,8 +257,18 @@ class WCIC_Admin {
             wp_die(__('You do not have sufficient permissions to access this page.', 'wc-intelligent-chatbot'));
         }
         
-        // Skip nonce verification for now to fix the issue
-        // We'll implement a more secure solution in the next update
+        // Verify nonce
+        if (!isset($_POST['ezeze_chatbot_nonce']) || !wp_verify_nonce($_POST['ezeze_chatbot_nonce'], 'ezeze_chatbot_settings_action')) {
+            wp_die(__('Security check failed. Please try again.', 'wc-intelligent-chatbot'));
+        }
+        
+        // Process checkbox fields - set them to 'no' if not present in POST data
+        $checkbox_fields = $this->get_checkbox_fields();
+        foreach ($checkbox_fields as $field) {
+            if (!isset($_POST[$field])) {
+                update_option($field, 'no');
+            }
+        }
         
         // Process all settings directly from $_POST
         foreach ($_POST as $key => $value) {
@@ -276,6 +286,45 @@ class WCIC_Admin {
         // Redirect back to the settings page with a success message
         wp_redirect(add_query_arg(array('page' => 'wc-intelligent-chatbot', 'settings-updated' => 'true'), admin_url('admin.php')));
         exit;
+    }
+    
+    /**
+     * Get all checkbox fields.
+     *
+     * @since    1.0.1
+     * @return   array    Array of checkbox field names.
+     */
+    private function get_checkbox_fields() {
+        return array(
+            'wcic_chatbot_enabled',
+            'wcic_mobile_enabled',
+            'wcic_desktop_enabled',
+            'wcic_tablet_enabled',
+            'wcic_enable_product_recommendations',
+            'wcic_enable_page_recommendations',
+            'wcic_enable_product_suggestions',
+            'wcic_enable_quick_replies',
+            'wcic_enable_voice_input',
+            'wcic_enable_file_attachments',
+            'wcic_enable_order_tracking',
+            'wcic_enable_product_comparison',
+            'wcic_enable_discount_codes',
+            'wcic_enable_cart_management',
+            'wcic_enable_multilingual',
+            'wcic_enable_feedback',
+            'wcic_enable_conversation_history',
+            'wcic_enable_proactive_messages',
+            'wcic_enable_typing_indicator',
+            'wcic_enable_read_receipts',
+            'wcic_enable_emoji',
+            'wcic_enable_avatar',
+            'wcic_enable_user_auth',
+            'wcic_enable_analytics',
+            'wcic_enable_offline_mode',
+            'wcic_product_suggestions_show_price',
+            'wcic_product_suggestions_show_image',
+            'wcic_product_suggestions_add_to_cart'
+        );
     }
     
     /**

@@ -25,11 +25,10 @@ if (!defined('WPINC')) {
         <a href="#advanced-features" class="nav-tab"><?php _e('Advanced Features', 'wc-intelligent-chatbot'); ?></a>
     </h2>
     
-    <form method="post" action="<?php echo admin_url('options.php'); ?>" class="wcic-settings-form">
+    <form method="post" action="<?php echo admin_url('admin-post.php'); ?>" class="wcic-settings-form">
+    <input type="hidden" name="action" value="save_ezeze_chatbot_settings">
         <div id="general-settings" class="wcic-settings-tab">
-            <?php
-            settings_fields('wcic_general_settings');
-            ?>
+            <?php wp_nonce_field('ezeze_chatbot_settings_action', 'ezeze_chatbot_nonce'); ?>
             <table class="form-table">
                 <tr valign="top">
                     <th scope="row"><?php _e('Enable Chatbot', 'wc-intelligent-chatbot'); ?></th>
@@ -105,9 +104,6 @@ if (!defined('WPINC')) {
         </div>
         
         <div id="appearance-settings" class="wcic-settings-tab" style="display: none;">
-            <?php
-            settings_fields('wcic_appearance_settings');
-            ?>
             <table class="form-table">
                 <tr valign="top">
                     <th scope="row"><?php _e('Primary Color', 'wc-intelligent-chatbot'); ?></th>
@@ -148,9 +144,6 @@ if (!defined('WPINC')) {
         </div>
         
         <div id="ai-settings" class="wcic-settings-tab" style="display: none;">
-            <?php
-            settings_fields('wcic_ai_settings');
-            ?>
             <table class="form-table">
                 <tr valign="top">
                     <th scope="row"><?php _e('OpenRouter API Key', 'wc-intelligent-chatbot'); ?></th>
@@ -182,9 +175,6 @@ if (!defined('WPINC')) {
         </div>
         
         <div id="recommendation-settings" class="wcic-settings-tab" style="display: none;">
-            <?php
-            settings_fields('wcic_recommendation_settings');
-            ?>
             <table class="form-table">
                 <tr valign="top">
                     <th scope="row"><?php _e('Product Recommendations', 'wc-intelligent-chatbot'); ?></th>
@@ -228,9 +218,6 @@ if (!defined('WPINC')) {
         </div>
         
         <div id="indexing-settings" class="wcic-settings-tab" style="display: none;">
-            <?php
-            settings_fields('wcic_indexing_settings');
-            ?>
             <table class="form-table">
                 <tr valign="top">
                     <th scope="row"><?php _e('Indexing Frequency', 'wc-intelligent-chatbot'); ?></th>
@@ -255,9 +242,6 @@ if (!defined('WPINC')) {
         </div>
         
         <div id="advanced-features" class="wcic-settings-tab" style="display: none;">
-            <?php
-            settings_fields('wcic_advanced_features');
-            ?>
             <table class="form-table">
                 <tr valign="top">
                     <th scope="row"><?php _e('Product Suggestions', 'wc-intelligent-chatbot'); ?></th>
@@ -525,8 +509,6 @@ if (!defined('WPINC')) {
         </div>
         
         <?php submit_button(); ?>
-        <input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce('ezeze_chatbot_settings'); ?>" />
-        <input type="hidden" name="_wp_http_referer" value="<?php echo esc_attr($_SERVER['REQUEST_URI']); ?>" />
     </form>
 </div>
 
