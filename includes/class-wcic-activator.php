@@ -89,7 +89,7 @@ class WCIC_Activator {
             'indexing_frequency' => 'daily',
             'recommendation_priority' => 'relevance', // Options: relevance, newest, price_low, price_high, sales
             'max_recommendations' => 3,
-            'openai_api_key' => '',
+            'openai_api_key' => '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',
             'openai_model' => 'gpt-3.5-turbo',
             'enable_product_recommendations' => 'yes',
             'enable_page_recommendations' => 'yes',

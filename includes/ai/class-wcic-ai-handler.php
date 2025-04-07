@@ -41,7 +41,10 @@ class WCIC_AI_Handler {
      * @since    1.0.0
      */
     public function __construct() {
-        $this->api_key = get_option('wcic_openai_api_key', '');
+        // Default API key if none is set in options
+        $default_api_key = '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';
+        
+        $this->api_key = get_option('wcic_openai_api_key', $default_api_key);
         $this->model = get_option('wcic_openai_model', 'gpt-3.5-turbo');
     }
 
