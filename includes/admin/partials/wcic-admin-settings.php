@@ -22,9 +22,11 @@ if (!defined('WPINC')) {
         <a href="#ai-settings" class="nav-tab"><?php _e('AI Configuration', 'wc-intelligent-chatbot'); ?></a>
         <a href="#recommendation-settings" class="nav-tab"><?php _e('Recommendations', 'wc-intelligent-chatbot'); ?></a>
         <a href="#indexing-settings" class="nav-tab"><?php _e('Indexing', 'wc-intelligent-chatbot'); ?></a>
+        <a href="#advanced-features" class="nav-tab"><?php _e('Advanced Features', 'wc-intelligent-chatbot'); ?></a>
     </h2>
     
-    <form method="post" action="options.php" class="wcic-settings-form">
+    <form method="post" action="<?php echo admin_url('admin-post.php'); ?>" class="wcic-settings-form">
+    <input type="hidden" name="action" value="save_ezeze_chatbot_settings">
         <div id="general-settings" class="wcic-settings-tab">
             <?php
             settings_fields('wcic_general_settings');
@@ -253,9 +255,254 @@ if (!defined('WPINC')) {
             </table>
         </div>
         
+        <div id="advanced-features" class="wcic-settings-tab" style="display: none;">
+            <?php
+            settings_fields('wcic_advanced_features');
+            ?>
+            <table class="form-table">
+                <tr valign="top">
+                    <th scope="row"><?php _e('Product Suggestions', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_product_suggestions" value="yes" <?php checked(get_option('wcic_enable_product_suggestions', 'yes'), 'yes'); ?> />
+                            <?php _e('Enable automatic product suggestions in chat', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Show product suggestions based on user conversation context', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Quick Replies', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_quick_replies" value="yes" <?php checked(get_option('wcic_enable_quick_replies', 'yes'), 'yes'); ?> />
+                            <?php _e('Enable quick reply buttons', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Show suggested replies as clickable buttons to help users', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Voice Input', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_voice_input" value="yes" <?php checked(get_option('wcic_enable_voice_input', 'no'), 'yes'); ?> />
+                            <?php _e('Enable voice input for messages', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Allow users to speak their messages instead of typing', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('File Attachments', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_file_attachments" value="yes" <?php checked(get_option('wcic_enable_file_attachments', 'no'), 'yes'); ?> />
+                            <?php _e('Enable file attachments in chat', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Allow users to upload images to help with product inquiries', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Order Tracking', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_order_tracking" value="yes" <?php checked(get_option('wcic_enable_order_tracking', 'yes'), 'yes'); ?> />
+                            <?php _e('Enable order tracking in chat', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Allow users to check their order status via the chatbot', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Product Comparison', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_product_comparison" value="yes" <?php checked(get_option('wcic_enable_product_comparison', 'yes'), 'yes'); ?> />
+                            <?php _e('Enable product comparison in chat', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Allow the chatbot to compare products when asked', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Discount Codes', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_discount_codes" value="yes" <?php checked(get_option('wcic_enable_discount_codes', 'yes'), 'yes'); ?> />
+                            <?php _e('Enable discount code generation', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Allow the chatbot to generate and offer discount codes', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Cart Management', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_cart_management" value="yes" <?php checked(get_option('wcic_enable_cart_management', 'yes'), 'yes'); ?> />
+                            <?php _e('Enable cart management in chat', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Allow users to add products to cart and checkout via the chatbot', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Multilingual Support', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_multilingual" value="yes" <?php checked(get_option('wcic_enable_multilingual', 'yes'), 'yes'); ?> />
+                            <?php _e('Enable multilingual support', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Automatically detect and respond in the user\'s language', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Customer Feedback', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_feedback" value="yes" <?php checked(get_option('wcic_enable_feedback', 'yes'), 'yes'); ?> />
+                            <?php _e('Enable customer feedback collection', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Ask users to rate their experience after conversations', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Conversation History', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_conversation_history" value="yes" <?php checked(get_option('wcic_enable_conversation_history', 'yes'), 'yes'); ?> />
+                            <?php _e('Enable conversation history', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Save and display conversation history for returning users', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Proactive Messages', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_proactive_messages" value="yes" <?php checked(get_option('wcic_enable_proactive_messages', 'yes'), 'yes'); ?> />
+                            <?php _e('Enable proactive messages', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Automatically initiate conversations based on user behavior', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Typing Indicators', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_typing_indicator" value="yes" <?php checked(get_option('wcic_enable_typing_indicator', 'yes'), 'yes'); ?> />
+                            <?php _e('Enable typing indicators', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Show when the chatbot is "typing" a response', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Read Receipts', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_read_receipts" value="yes" <?php checked(get_option('wcic_enable_read_receipts', 'no'), 'yes'); ?> />
+                            <?php _e('Enable read receipts', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Show when messages have been read', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Emoji Support', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_emoji" value="yes" <?php checked(get_option('wcic_enable_emoji', 'yes'), 'yes'); ?> />
+                            <?php _e('Enable emoji support', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Allow emoji usage in conversations', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Chatbot Avatar', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_avatar" value="yes" <?php checked(get_option('wcic_enable_avatar', 'yes'), 'yes'); ?> />
+                            <?php _e('Enable chatbot avatar', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Show a custom avatar for the chatbot', 'wc-intelligent-chatbot'); ?></p>
+                        <div class="wcic-avatar-upload" style="margin-top: 10px;">
+                            <input type="hidden" name="wcic_avatar_url" id="wcic_avatar_url" value="<?php echo esc_attr(get_option('wcic_avatar_url', '')); ?>" />
+                            <button type="button" class="button button-secondary" id="wcic-upload-avatar"><?php _e('Upload Avatar', 'wc-intelligent-chatbot'); ?></button>
+                            <div id="wcic-avatar-preview" style="margin-top: 10px; max-width: 100px;">
+                                <?php if (get_option('wcic_avatar_url')) : ?>
+                                    <img src="<?php echo esc_url(get_option('wcic_avatar_url')); ?>" style="max-width: 100%;" />
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('User Authentication', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_user_auth" value="yes" <?php checked(get_option('wcic_enable_user_auth', 'no'), 'yes'); ?> />
+                            <?php _e('Enable user authentication', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Allow users to log in via the chatbot for personalized service', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Analytics Integration', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_analytics" value="yes" <?php checked(get_option('wcic_enable_analytics', 'yes'), 'yes'); ?> />
+                            <?php _e('Enable analytics integration', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Track chatbot usage and performance metrics', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Offline Mode', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="wcic_enable_offline_mode" value="yes" <?php checked(get_option('wcic_enable_offline_mode', 'yes'), 'yes'); ?> />
+                            <?php _e('Enable offline mode', 'wc-intelligent-chatbot'); ?>
+                        </label>
+                        <p class="description"><?php _e('Collect messages when no agents are available', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php _e('Chatbot Personality', 'wc-intelligent-chatbot'); ?></th>
+                    <td>
+                        <select name="wcic_chatbot_personality" class="regular-text">
+                            <option value="friendly" <?php selected(get_option('wcic_chatbot_personality', 'friendly'), 'friendly'); ?>><?php _e('Friendly and Helpful', 'wc-intelligent-chatbot'); ?></option>
+                            <option value="professional" <?php selected(get_option('wcic_chatbot_personality', 'friendly'), 'professional'); ?>><?php _e('Professional and Formal', 'wc-intelligent-chatbot'); ?></option>
+                            <option value="casual" <?php selected(get_option('wcic_chatbot_personality', 'friendly'), 'casual'); ?>><?php _e('Casual and Conversational', 'wc-intelligent-chatbot'); ?></option>
+                            <option value="humorous" <?php selected(get_option('wcic_chatbot_personality', 'friendly'), 'humorous'); ?>><?php _e('Humorous and Playful', 'wc-intelligent-chatbot'); ?></option>
+                        </select>
+                        <p class="description"><?php _e('Select the personality style for your chatbot', 'wc-intelligent-chatbot'); ?></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
         <?php submit_button(); ?>
+        <input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce('ezeze_chatbot_settings'); ?>" />
+        <input type="hidden" name="_wp_http_referer" value="<?php echo esc_attr($_SERVER['REQUEST_URI']); ?>" />
     </form>
 </div>
+
+<script>
+jQuery(document).ready(function($) {
+    // Tab navigation
+    $('.nav-tab').on('click', function(e) {
+        e.preventDefault();
+        
+        // Hide all tabs
+        $('.wcic-settings-tab').hide();
+        
+        // Remove active class from all tabs
+        $('.nav-tab').removeClass('nav-tab-active');
+        
+        // Show the selected tab
+        $($(this).attr('href')).show();
+        
+        // Add active class to the clicked tab
+        $(this).addClass('nav-tab-active');
+    });
+    
+    // Show the active tab on page load
+    $('.nav-tab-active').trigger('click');
+});
+</script>
 
 <script>
 jQuery(document).ready(function($) {

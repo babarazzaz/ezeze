@@ -162,8 +162,34 @@ class WCIC_Admin {
         // Indexing Settings
         register_setting('wcic_indexing_settings', 'wcic_indexing_frequency', 'sanitize_text_field');
         
+        // Advanced Features
+        register_setting('wcic_advanced_features', 'wcic_enable_product_suggestions', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_quick_replies', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_voice_input', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_file_attachments', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_order_tracking', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_product_comparison', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_discount_codes', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_cart_management', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_multilingual', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_feedback', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_conversation_history', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_proactive_messages', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_typing_indicator', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_read_receipts', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_emoji', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_avatar', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_avatar_url', 'esc_url_raw');
+        register_setting('wcic_advanced_features', 'wcic_enable_user_auth', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_analytics', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_enable_offline_mode', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_advanced_features', 'wcic_chatbot_personality', 'sanitize_text_field');
+        
         // Add action to save settings
         add_action('admin_init', array($this, 'save_settings'));
+        
+        // Add action to handle form submission
+        add_action('admin_post_save_ezeze_chatbot_settings', array($this, 'handle_form_submission'));
     }
     
     /**
@@ -195,6 +221,53 @@ class WCIC_Admin {
         $this->save_setting_if_set('wcic_recommendation_priority', 'sanitize_text_field');
         $this->save_setting_if_set('wcic_max_recommendations', 'absint');
         $this->save_setting_if_set('wcic_indexing_frequency', 'sanitize_text_field');
+        
+        // Save advanced features settings
+        $this->save_setting_if_set('wcic_enable_product_suggestions', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_quick_replies', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_voice_input', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_file_attachments', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_order_tracking', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_product_comparison', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_discount_codes', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_cart_management', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_multilingual', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_feedback', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_conversation_history', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_proactive_messages', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_typing_indicator', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_read_receipts', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_emoji', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_avatar', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_avatar_url', 'esc_url_raw');
+        $this->save_setting_if_set('wcic_enable_user_auth', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_analytics', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_offline_mode', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_chatbot_personality', 'sanitize_text_field');
+    }
+    
+    /**
+     * Handle form submission from admin-post.php.
+     *
+     * @since    1.0.1
+     */
+    public function handle_form_submission() {
+        // Check if user has proper permissions
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.', 'wc-intelligent-chatbot'));
+        }
+        
+        // Verify nonce
+        if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'ezeze_chatbot_settings')) {
+            wp_die(__('Security check failed. Please try again.', 'wc-intelligent-chatbot'));
+        }
+        
+        // Process all settings
+        $this->save_settings();
+        
+        // Redirect back to the settings page with a success message
+        wp_redirect(add_query_arg(array('page' => 'wc-intelligent-chatbot', 'settings-updated' => 'true'), admin_url('admin.php')));
+        exit;
     }
     
     /**

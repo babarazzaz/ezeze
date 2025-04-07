@@ -144,6 +144,9 @@
             // Show typing indicator
             this.showTypingIndicator();
             
+            // Check if we should show product suggestions based on the message
+            const shouldShowSuggestions = this.shouldShowProductSuggestions(message);
+            
             // Send message to server
             $.ajax({
                 url: wcic_params.ajax_url,
@@ -152,7 +155,8 @@
                     action: 'wcic_send_message',
                     nonce: wcic_params.nonce,
                     message: message,
-                    session_id: this.sessionId
+                    session_id: this.sessionId,
+                    show_suggestions: shouldShowSuggestions ? 'yes' : 'no'
                 },
                 success: (response) => {
                     // Hide typing indicator
@@ -161,6 +165,11 @@
                     if (response.success) {
                         // Add bot response to chat
                         this.addMessage(response.data.message, false, response.data.recommendations);
+                        
+                        // Add quick replies if available
+                        if (response.data.quick_replies && response.data.quick_replies.length > 0) {
+                            this.addQuickReplies(response.data.quick_replies);
+                        }
                         
                         // Update session ID if needed
                         if (response.data.session_id) {
@@ -185,6 +194,70 @@
                     // Save messages to localStorage
                     this.saveMessages();
                 }
+            });
+        }
+        
+        /**
+         * Check if we should show product suggestions based on the message.
+         * 
+         * @param {string} message The user message
+         * @return {boolean} Whether to show product suggestions
+         */
+        shouldShowProductSuggestions(message) {
+            // Check if product suggestions are enabled
+            if (wcic_params.enable_product_suggestions !== 'yes') {
+                return false;
+            }
+            
+            // Keywords that indicate the user might be looking for products
+            const productKeywords = [
+                'buy', 'purchase', 'order', 'shop', 'product', 'item', 'price', 'cost',
+                'how much', 'available', 'in stock', 'shipping', 'delivery', 'recommend',
+                'suggestion', 'best', 'top', 'popular', 'new', 'latest', 'sale', 'discount',
+                'offer', 'deal', 'cheap', 'expensive', 'affordable', 'quality', 'brand',
+                'model', 'size', 'color', 'feature', 'specification', 'compare', 'difference',
+                'similar', 'alternative', 'option', 'looking for', 'interested in', 'want to buy'
+            ];
+            
+            // Check if the message contains any product keywords
+            const lowerMessage = message.toLowerCase();
+            return productKeywords.some(keyword => lowerMessage.includes(keyword.toLowerCase()));
+        }
+        
+        /**
+         * Add quick replies to the chat.
+         * 
+         * @param {Array} quickReplies Array of quick reply options
+         */
+        addQuickReplies(quickReplies) {
+            // Check if quick replies are enabled
+            if (wcic_params.enable_quick_replies !== 'yes') {
+                return;
+            }
+            
+            let html = '<div class="wcic-quick-replies">';
+            
+            quickReplies.forEach((reply, index) => {
+                html += `
+                    <button class="wcic-quick-reply-btn" style="animation-delay: ${0.1 + (index * 0.05)}s; opacity: 0; transform: translateY(10px); animation: message-appear 0.3s ease-out forwards;">
+                        ${reply}
+                    </button>
+                `;
+            });
+            
+            html += '</div>';
+            
+            this.chatbotMessages.append(html);
+            this.scrollToBottom();
+            
+            // Add click event to quick reply buttons
+            $('.wcic-quick-reply-btn').on('click', (e) => {
+                const replyText = $(e.target).text().trim();
+                this.chatbotInput.val(replyText);
+                this.sendMessage();
+                
+                // Remove all quick replies after one is clicked
+                $('.wcic-quick-replies').remove();
             });
         }
         
