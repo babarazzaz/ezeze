@@ -18,11 +18,11 @@ if (!defined('WPINC')) {
     
     <h2 class="nav-tab-wrapper">
         <a href="#general-settings" class="nav-tab nav-tab-active"><?php _e('General', 'wc-intelligent-chatbot'); ?></a>
-        <a href="#appearance-settings" class="nav-tab"><?php _e('Appearance', 'wc-intelligent-chatbot'); ?></a>
-        <a href="#ai-settings" class="nav-tab"><?php _e('AI Configuration', 'wc-intelligent-chatbot'); ?></a>
-        <a href="#recommendation-settings" class="nav-tab"><?php _e('Recommendations', 'wc-intelligent-chatbot'); ?></a>
-        <a href="#indexing-settings" class="nav-tab"><?php _e('Indexing', 'wc-intelligent-chatbot'); ?></a>
-        <a href="#advanced-features" class="nav-tab"><?php _e('Advanced Features', 'wc-intelligent-chatbot'); ?></a>
+        <a href="#appearance-settings" class="nav-tab"><?php _e('Apparence', 'wc-intelligent-chatbot'); ?></a>
+        <a href="#ai-settings" class="nav-tab"><?php _e('Configuration IA', 'wc-intelligent-chatbot'); ?></a>
+        <a href="#recommendation-settings" class="nav-tab"><?php _e('Recommandations', 'wc-intelligent-chatbot'); ?></a>
+        <a href="#indexing-settings" class="nav-tab"><?php _e('Indexation', 'wc-intelligent-chatbot'); ?></a>
+        <a href="#advanced-features" class="nav-tab"><?php _e('Fonctionnalites Avancees', 'wc-intelligent-chatbot'); ?></a>
     </h2>
     
     <form method="post" action="<?php echo admin_url('admin-post.php'); ?>" class="wcic-settings-form">
@@ -31,47 +31,47 @@ if (!defined('WPINC')) {
             <?php wp_nonce_field('ezeze_chatbot_settings_action', 'ezeze_chatbot_nonce'); ?>
             <table class="form-table">
                 <tr valign="top">
-                    <th scope="row"><?php _e('Enable Chatbot', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Activer le Chatbot', 'wc-intelligent-chatbot'); ?></th>
                     <td>
                         <label>
                             <input type="checkbox" name="wcic_chatbot_enabled" value="yes" <?php checked(get_option('wcic_chatbot_enabled', 'yes'), 'yes'); ?> />
-                            <?php _e('Enable the chatbot on your site', 'wc-intelligent-chatbot'); ?>
+                            <?php _e('Activer le chatbot sur votre site', 'wc-intelligent-chatbot'); ?>
                         </label>
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php _e('Chatbot Title', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Titre du Chatbot', 'wc-intelligent-chatbot'); ?></th>
                     <td>
                         <input type="text" name="wcic_chatbot_title" value="<?php echo esc_attr(get_option('wcic_chatbot_title', 'Store Assistant')); ?>" class="regular-text" />
                         <p class="description"><?php _e('The title displayed in the chatbot header', 'wc-intelligent-chatbot'); ?></p>
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php _e('Welcome Message', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Message de Bienvenue', 'wc-intelligent-chatbot'); ?></th>
                     <td>
                         <textarea name="wcic_chatbot_welcome_message" rows="3" class="large-text"><?php echo esc_textarea(get_option('wcic_chatbot_welcome_message', 'Hello! I\'m your personal shopping assistant. How can I help you today?')); ?></textarea>
                         <p class="description"><?php _e('The initial message displayed when the chatbot is opened', 'wc-intelligent-chatbot'); ?></p>
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php _e('Chatbot Position', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Position du Chatbot', 'wc-intelligent-chatbot'); ?></th>
                     <td>
                         <select name="wcic_chatbot_position">
-                            <option value="bottom-right" <?php selected(get_option('wcic_chatbot_position', 'bottom-right'), 'bottom-right'); ?>><?php _e('Bottom Right', 'wc-intelligent-chatbot'); ?></option>
-                            <option value="bottom-left" <?php selected(get_option('wcic_chatbot_position', 'bottom-right'), 'bottom-left'); ?>><?php _e('Bottom Left', 'wc-intelligent-chatbot'); ?></option>
+                            <option value="bottom-right" <?php selected(get_option('wcic_chatbot_position', 'bottom-right'), 'bottom-right'); ?>><?php _e('En bas a droite', 'wc-intelligent-chatbot'); ?></option>
+                            <option value="bottom-left" <?php selected(get_option('wcic_chatbot_position', 'bottom-right'), 'bottom-left'); ?>><?php _e('En bas a gauche', 'wc-intelligent-chatbot'); ?></option>
                         </select>
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php _e('Display On', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Afficher Sur', 'wc-intelligent-chatbot'); ?></th>
                     <td>
                         <label>
                             <input type="radio" name="wcic_display_on_pages" value="all" <?php checked(get_option('wcic_display_on_pages', 'all'), 'all'); ?> />
-                            <?php _e('All Pages', 'wc-intelligent-chatbot'); ?>
+                            <?php _e('Toutes les Pages', 'wc-intelligent-chatbot'); ?>
                         </label><br>
                         <label>
                             <input type="radio" name="wcic_display_on_pages" value="shop" <?php checked(get_option('wcic_display_on_pages', 'all'), 'shop'); ?> />
-                            <?php _e('Shop Pages Only', 'wc-intelligent-chatbot'); ?>
+                            <?php _e('Pages Boutique Uniquement', 'wc-intelligent-chatbot'); ?>
                         </label><br>
                         <label>
                             <input type="radio" name="wcic_display_on_pages" value="custom" <?php checked(get_option('wcic_display_on_pages', 'all'), 'custom'); ?> />
@@ -106,35 +106,35 @@ if (!defined('WPINC')) {
         <div id="appearance-settings" class="wcic-settings-tab" style="display: none;">
             <table class="form-table">
                 <tr valign="top">
-                    <th scope="row"><?php _e('Primary Color', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Couleur Principale', 'wc-intelligent-chatbot'); ?></th>
                     <td>
                         <input type="text" name="wcic_chatbot_primary_color" value="<?php echo esc_attr(get_option('wcic_chatbot_primary_color', '#0073aa')); ?>" class="wcic-color-picker" />
                         <p class="description"><?php _e('The main color for the chatbot header and buttons', 'wc-intelligent-chatbot'); ?></p>
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php _e('Secondary Color', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Couleur Secondaire', 'wc-intelligent-chatbot'); ?></th>
                     <td>
                         <input type="text" name="wcic_chatbot_secondary_color" value="<?php echo esc_attr(get_option('wcic_chatbot_secondary_color', '#f7f7f7')); ?>" class="wcic-color-picker" />
                         <p class="description"><?php _e('The background color for the chatbot', 'wc-intelligent-chatbot'); ?></p>
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php _e('Text Color', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Couleur du Texte', 'wc-intelligent-chatbot'); ?></th>
                     <td>
                         <input type="text" name="wcic_chatbot_text_color" value="<?php echo esc_attr(get_option('wcic_chatbot_text_color', '#333333')); ?>" class="wcic-color-picker" />
                         <p class="description"><?php _e('The color for the chatbot text', 'wc-intelligent-chatbot'); ?></p>
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php _e('Button Color', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Couleur des Boutons', 'wc-intelligent-chatbot'); ?></th>
                     <td>
                         <input type="text" name="wcic_chatbot_button_color" value="<?php echo esc_attr(get_option('wcic_chatbot_button_color', '#0073aa')); ?>" class="wcic-color-picker" />
                         <p class="description"><?php _e('The color for buttons in the chatbot', 'wc-intelligent-chatbot'); ?></p>
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php _e('Button Text Color', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Button Couleur du Texte', 'wc-intelligent-chatbot'); ?></th>
                     <td>
                         <input type="text" name="wcic_chatbot_button_text_color" value="<?php echo esc_attr(get_option('wcic_chatbot_button_text_color', '#ffffff')); ?>" class="wcic-color-picker" />
                         <p class="description"><?php _e('The color for text on buttons', 'wc-intelligent-chatbot'); ?></p>
@@ -146,29 +146,32 @@ if (!defined('WPINC')) {
         <div id="ai-settings" class="wcic-settings-tab" style="display: none;">
             <table class="form-table">
                 <tr valign="top">
-                    <th scope="row"><?php _e('OpenRouter API Key', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Cle API OpenRouter', 'wc-intelligent-chatbot'); ?></th>
                     <td>
                         <input type="password" name="wcic_openai_api_key" value="<?php echo esc_attr(get_option('wcic_openai_api_key', '')); ?>" class="regular-text" />
-                        <p class="description"><?php _e('Your OpenRouter API key for AI-powered conversations', 'wc-intelligent-chatbot'); ?></p>
-                        <button type="button" class="button button-secondary" id="wcic-test-ai-connection"><?php _e('Test Connection', 'wc-intelligent-chatbot'); ?></button>
+                        <p class="description"><?php _e('Votre cle API OpenRouter pour les conversations alimentees par IA', 'wc-intelligent-chatbot'); ?></p>
+                        <button type="button" class="button button-secondary" id="wcic-test-ai-connection"><?php _e('Tester la connexion', 'wc-intelligent-chatbot'); ?></button>
                         <span id="wcic-connection-result" style="margin-left: 10px;"></span>
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php _e('AI Model', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Modele IA', 'wc-intelligent-chatbot'); ?></th>
                     <td>
-                        <select name="wcic_openai_model" class="regular-text">
-                            <option value="openai/gpt-4o" <?php selected(get_option('wcic_openai_model', 'openai/gpt-4o'), 'openai/gpt-4o'); ?>><?php _e('OpenAI: GPT-4o (Recommended)', 'wc-intelligent-chatbot'); ?></option>
-                            <option value="meta-llama/llama-4-maverick" <?php selected(get_option('wcic_openai_model', 'openai/gpt-4o'), 'meta-llama/llama-4-maverick'); ?>><?php _e('Meta: Llama 4 Maverick', 'wc-intelligent-chatbot'); ?></option>
-                            <option value="meta-llama/llama-4-scout" <?php selected(get_option('wcic_openai_model', 'openai/gpt-4o'), 'meta-llama/llama-4-scout'); ?>><?php _e('Meta: Llama 4 Scout', 'wc-intelligent-chatbot'); ?></option>
-                            <option value="google/gemini-2.5-pro-preview-03-25" <?php selected(get_option('wcic_openai_model', 'openai/gpt-4o'), 'google/gemini-2.5-pro-preview-03-25'); ?>><?php _e('Google: Gemini 2.5 Pro', 'wc-intelligent-chatbot'); ?></option>
-                            <option value="openrouter/quasar-alpha" <?php selected(get_option('wcic_openai_model', 'openai/gpt-4o'), 'openrouter/quasar-alpha'); ?>><?php _e('OpenRouter: Quasar Alpha', 'wc-intelligent-chatbot'); ?></option>
-                            <option value="mistral/ministral-8b" <?php selected(get_option('wcic_openai_model', 'openai/gpt-4o'), 'mistral/ministral-8b'); ?>><?php _e('Mistral: Ministral 8B', 'wc-intelligent-chatbot'); ?></option>
-                            <option value="anthropic/claude-3-opus" <?php selected(get_option('wcic_openai_model', 'openai/gpt-4o'), 'anthropic/claude-3-opus'); ?>><?php _e('Anthropic: Claude 3 Opus', 'wc-intelligent-chatbot'); ?></option>
-                            <option value="anthropic/claude-3-sonnet" <?php selected(get_option('wcic_openai_model', 'openai/gpt-4o'), 'anthropic/claude-3-sonnet'); ?>><?php _e('Anthropic: Claude 3 Sonnet', 'wc-intelligent-chatbot'); ?></option>
-                        </select>
-                        <p class="description"><?php _e('Select the AI model to use via OpenRouter. Different models have different capabilities and pricing.', 'wc-intelligent-chatbot'); ?></p>
-                        <p><a href="https://openrouter.ai/models" target="_blank" class="button button-secondary"><?php _e('View All OpenRouter Models', 'wc-intelligent-chatbot'); ?></a></p>
+                        <input type="text" name="wcic_openai_model" value="<?php echo esc_attr(get_option('wcic_openai_model', 'openai/gpt-4o')); ?>" class="regular-text" placeholder="openai/gpt-4o" />
+                        <p class="description"><?php _e('Entrez l\'identifiant du modele OpenRouter a utiliser (ex: openai/gpt-4o, anthropic/claude-3-opus, etc.)', 'wc-intelligent-chatbot'); ?></p>
+                        
+                        <div style="margin-top: 15px;">
+                            <p><strong><?php _e('Modeles populaires :', 'wc-intelligent-chatbot'); ?></strong></p>
+                            <ul style="list-style-type: disc; margin-left: 20px;">
+                                <li><code>openai/gpt-4o</code> - <?php _e('OpenAI GPT-4o (Recommande)', 'wc-intelligent-chatbot'); ?></li>
+                                <li><code>meta-llama/llama-4-maverick</code> - <?php _e('Meta Llama 4 Maverick', 'wc-intelligent-chatbot'); ?></li>
+                                <li><code>anthropic/claude-3-opus</code> - <?php _e('Anthropic Claude 3 Opus', 'wc-intelligent-chatbot'); ?></li>
+                                <li><code>google/gemini-2.5-pro-preview-03-25</code> - <?php _e('Google Gemini 2.5 Pro', 'wc-intelligent-chatbot'); ?></li>
+                                <li><code>mistral/ministral-8b</code> - <?php _e('Mistral Ministral 8B', 'wc-intelligent-chatbot'); ?></li>
+                            </ul>
+                        </div>
+                        <p class="description"><?php _e('Selectionnez le modele IA a utiliser via OpenRouter. Differents modeles ont des capacites et des prix differents.', 'wc-intelligent-chatbot'); ?></p>
+                        <p><a href="https://openrouter.ai/models" target="_blank" class="button button-secondary"><?php _e('Voir tous les modeles OpenRouter', 'wc-intelligent-chatbot'); ?></a></p>
                     </td>
                 </tr>
             </table>
@@ -177,7 +180,7 @@ if (!defined('WPINC')) {
         <div id="recommendation-settings" class="wcic-settings-tab" style="display: none;">
             <table class="form-table">
                 <tr valign="top">
-                    <th scope="row"><?php _e('Product Recommendations', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Product Recommandations', 'wc-intelligent-chatbot'); ?></th>
                     <td>
                         <label>
                             <input type="checkbox" name="wcic_enable_product_recommendations" value="yes" <?php checked(get_option('wcic_enable_product_recommendations', 'yes'), 'yes'); ?> />
@@ -186,7 +189,7 @@ if (!defined('WPINC')) {
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php _e('Page Recommendations', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Page Recommandations', 'wc-intelligent-chatbot'); ?></th>
                     <td>
                         <label>
                             <input type="checkbox" name="wcic_enable_page_recommendations" value="yes" <?php checked(get_option('wcic_enable_page_recommendations', 'yes'), 'yes'); ?> />
@@ -208,7 +211,7 @@ if (!defined('WPINC')) {
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php _e('Maximum Recommendations', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Maximum Recommandations', 'wc-intelligent-chatbot'); ?></th>
                     <td>
                         <input type="number" name="wcic_max_recommendations" value="<?php echo esc_attr(get_option('wcic_max_recommendations', '3')); ?>" min="1" max="10" />
                         <p class="description"><?php _e('Maximum number of recommendations to show in a response', 'wc-intelligent-chatbot'); ?></p>
@@ -220,7 +223,7 @@ if (!defined('WPINC')) {
         <div id="indexing-settings" class="wcic-settings-tab" style="display: none;">
             <table class="form-table">
                 <tr valign="top">
-                    <th scope="row"><?php _e('Indexing Frequency', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Indexation Frequency', 'wc-intelligent-chatbot'); ?></th>
                     <td>
                         <select name="wcic_indexing_frequency">
                             <option value="hourly" <?php selected(get_option('wcic_indexing_frequency', 'daily'), 'hourly'); ?>><?php _e('Hourly', 'wc-intelligent-chatbot'); ?></option>
@@ -232,10 +235,10 @@ if (!defined('WPINC')) {
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php _e('Manual Indexing', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('Manual Indexation', 'wc-intelligent-chatbot'); ?></th>
                     <td>
-                        <p><?php _e('You can manually trigger indexing from the Indexing page.', 'wc-intelligent-chatbot'); ?></p>
-                        <a href="<?php echo admin_url('admin.php?page=wc-intelligent-chatbot-indexing'); ?>" class="button button-secondary"><?php _e('Go to Indexing Page', 'wc-intelligent-chatbot'); ?></a>
+                        <p><?php _e('You can manually trigger indexing from the Indexation page.', 'wc-intelligent-chatbot'); ?></p>
+                        <a href="<?php echo admin_url('admin.php?page=wc-intelligent-chatbot-indexing'); ?>" class="button button-secondary"><?php _e('Go to Indexation Page', 'wc-intelligent-chatbot'); ?></a>
                     </td>
                 </tr>
             </table>
