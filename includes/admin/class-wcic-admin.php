@@ -88,8 +88,8 @@ class WCIC_Admin {
      */
     public function add_admin_menu() {
         add_menu_page(
-            __('WC Intelligent Chatbot', 'wc-intelligent-chatbot'),
-            __('Chatbot', 'wc-intelligent-chatbot'),
+            __('Ezeze Intelligent Chatbot', 'wc-intelligent-chatbot'),
+            __('Ezeze Chatbot', 'wc-intelligent-chatbot'),
             'manage_options',
             'wc-intelligent-chatbot',
             array($this, 'display_settings_page'),
@@ -132,35 +132,124 @@ class WCIC_Admin {
      */
     public function register_settings() {
         // General Settings
-        register_setting('wcic_general_settings', 'wcic_chatbot_enabled');
-        register_setting('wcic_general_settings', 'wcic_chatbot_title');
-        register_setting('wcic_general_settings', 'wcic_chatbot_welcome_message');
-        register_setting('wcic_general_settings', 'wcic_chatbot_position');
-        register_setting('wcic_general_settings', 'wcic_display_on_pages');
-        register_setting('wcic_general_settings', 'wcic_excluded_pages');
-        register_setting('wcic_general_settings', 'wcic_mobile_enabled');
-        register_setting('wcic_general_settings', 'wcic_desktop_enabled');
-        register_setting('wcic_general_settings', 'wcic_tablet_enabled');
+        register_setting('wcic_general_settings', 'wcic_chatbot_enabled', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_general_settings', 'wcic_chatbot_title', 'sanitize_text_field');
+        register_setting('wcic_general_settings', 'wcic_chatbot_welcome_message', 'sanitize_textarea_field');
+        register_setting('wcic_general_settings', 'wcic_chatbot_position', 'sanitize_text_field');
+        register_setting('wcic_general_settings', 'wcic_display_on_pages', array($this, 'sanitize_array'));
+        register_setting('wcic_general_settings', 'wcic_excluded_pages', array($this, 'sanitize_array'));
+        register_setting('wcic_general_settings', 'wcic_mobile_enabled', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_general_settings', 'wcic_desktop_enabled', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_general_settings', 'wcic_tablet_enabled', array($this, 'sanitize_checkbox'));
         
         // Appearance Settings
-        register_setting('wcic_appearance_settings', 'wcic_chatbot_primary_color');
-        register_setting('wcic_appearance_settings', 'wcic_chatbot_secondary_color');
-        register_setting('wcic_appearance_settings', 'wcic_chatbot_text_color');
-        register_setting('wcic_appearance_settings', 'wcic_chatbot_button_color');
-        register_setting('wcic_appearance_settings', 'wcic_chatbot_button_text_color');
+        register_setting('wcic_appearance_settings', 'wcic_chatbot_primary_color', 'sanitize_hex_color');
+        register_setting('wcic_appearance_settings', 'wcic_chatbot_secondary_color', 'sanitize_hex_color');
+        register_setting('wcic_appearance_settings', 'wcic_chatbot_text_color', 'sanitize_hex_color');
+        register_setting('wcic_appearance_settings', 'wcic_chatbot_button_color', 'sanitize_hex_color');
+        register_setting('wcic_appearance_settings', 'wcic_chatbot_button_text_color', 'sanitize_hex_color');
         
         // AI Settings
-        register_setting('wcic_ai_settings', 'wcic_openai_api_key');
-        register_setting('wcic_ai_settings', 'wcic_openai_model');
+        register_setting('wcic_ai_settings', 'wcic_openai_api_key', 'sanitize_text_field');
+        register_setting('wcic_ai_settings', 'wcic_openai_model', 'sanitize_text_field');
         
         // Recommendation Settings
-        register_setting('wcic_recommendation_settings', 'wcic_enable_product_recommendations');
-        register_setting('wcic_recommendation_settings', 'wcic_enable_page_recommendations');
-        register_setting('wcic_recommendation_settings', 'wcic_recommendation_priority');
-        register_setting('wcic_recommendation_settings', 'wcic_max_recommendations');
+        register_setting('wcic_recommendation_settings', 'wcic_enable_product_recommendations', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_recommendation_settings', 'wcic_enable_page_recommendations', array($this, 'sanitize_checkbox'));
+        register_setting('wcic_recommendation_settings', 'wcic_recommendation_priority', 'sanitize_text_field');
+        register_setting('wcic_recommendation_settings', 'wcic_max_recommendations', 'absint');
         
         // Indexing Settings
-        register_setting('wcic_indexing_settings', 'wcic_indexing_frequency');
+        register_setting('wcic_indexing_settings', 'wcic_indexing_frequency', 'sanitize_text_field');
+        
+        // Add action to save settings
+        add_action('admin_init', array($this, 'save_settings'));
+    }
+    
+    /**
+     * Save settings when form is submitted.
+     *
+     * @since    1.0.1
+     */
+    public function save_settings() {
+        if (isset($_POST['wcic_openai_api_key'])) {
+            update_option('wcic_openai_api_key', sanitize_text_field($_POST['wcic_openai_api_key']));
+        }
+        
+        if (isset($_POST['wcic_openai_model'])) {
+            update_option('wcic_openai_model', sanitize_text_field($_POST['wcic_openai_model']));
+        }
+        
+        // Save other settings as needed
+        $this->save_setting_if_set('wcic_chatbot_enabled', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_chatbot_title', 'sanitize_text_field');
+        $this->save_setting_if_set('wcic_chatbot_welcome_message', 'sanitize_textarea_field');
+        $this->save_setting_if_set('wcic_chatbot_position', 'sanitize_text_field');
+        $this->save_setting_if_set('wcic_chatbot_primary_color', 'sanitize_hex_color');
+        $this->save_setting_if_set('wcic_chatbot_secondary_color', 'sanitize_hex_color');
+        $this->save_setting_if_set('wcic_chatbot_text_color', 'sanitize_hex_color');
+        $this->save_setting_if_set('wcic_chatbot_button_color', 'sanitize_hex_color');
+        $this->save_setting_if_set('wcic_chatbot_button_text_color', 'sanitize_hex_color');
+        $this->save_setting_if_set('wcic_enable_product_recommendations', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_enable_page_recommendations', array($this, 'sanitize_checkbox'));
+        $this->save_setting_if_set('wcic_recommendation_priority', 'sanitize_text_field');
+        $this->save_setting_if_set('wcic_max_recommendations', 'absint');
+        $this->save_setting_if_set('wcic_indexing_frequency', 'sanitize_text_field');
+    }
+    
+    /**
+     * Helper function to save a setting if it's set in the POST data.
+     *
+     * @since    1.0.1
+     * @param    string    $option_name    The name of the option to save.
+     * @param    callable  $sanitize_callback    The sanitization callback to use.
+     */
+    private function save_setting_if_set($option_name, $sanitize_callback) {
+        if (isset($_POST[$option_name])) {
+            $value = $_POST[$option_name];
+            
+            if (is_callable($sanitize_callback)) {
+                $value = call_user_func($sanitize_callback, $value);
+            }
+            
+            update_option($option_name, $value);
+        }
+    }
+    
+    /**
+     * Sanitize checkbox values.
+     *
+     * @since    1.0.1
+     * @param    mixed    $input    The input to sanitize.
+     * @return   string             'yes' if checked, 'no' if not.
+     */
+    public function sanitize_checkbox($input) {
+        return ($input === 'yes' || $input === true || $input === '1' || $input === 1) ? 'yes' : 'no';
+    }
+    
+    /**
+     * Sanitize array values.
+     *
+     * @since    1.0.1
+     * @param    mixed    $input    The input to sanitize.
+     * @return   array              The sanitized array.
+     */
+    public function sanitize_array($input) {
+        if (!is_array($input)) {
+            return array();
+        }
+        
+        $sanitized = array();
+        
+        foreach ($input as $key => $value) {
+            if (is_array($value)) {
+                $sanitized[$key] = $this->sanitize_array($value);
+            } else {
+                $sanitized[$key] = sanitize_text_field($value);
+            }
+        }
+        
+        return $sanitized;
     }
 
     /**

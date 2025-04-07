@@ -163,9 +163,18 @@ if (!defined('WPINC')) {
                 <tr valign="top">
                     <th scope="row"><?php _e('AI Model', 'wc-intelligent-chatbot'); ?></th>
                     <td>
-                        <p><strong>openai/gpt-4o</strong> (OpenRouter)</p>
-                        <p class="description"><?php _e('This plugin uses the GPT-4o model via OpenRouter for optimal performance', 'wc-intelligent-chatbot'); ?></p>
-                        <input type="hidden" name="wcic_openai_model" value="openai/gpt-4o" />
+                        <select name="wcic_openai_model" class="regular-text">
+                            <option value="openai/gpt-4o" <?php selected(get_option('wcic_openai_model', 'openai/gpt-4o'), 'openai/gpt-4o'); ?>><?php _e('OpenAI: GPT-4o (Recommended)', 'wc-intelligent-chatbot'); ?></option>
+                            <option value="meta-llama/llama-4-maverick" <?php selected(get_option('wcic_openai_model', 'openai/gpt-4o'), 'meta-llama/llama-4-maverick'); ?>><?php _e('Meta: Llama 4 Maverick', 'wc-intelligent-chatbot'); ?></option>
+                            <option value="meta-llama/llama-4-scout" <?php selected(get_option('wcic_openai_model', 'openai/gpt-4o'), 'meta-llama/llama-4-scout'); ?>><?php _e('Meta: Llama 4 Scout', 'wc-intelligent-chatbot'); ?></option>
+                            <option value="google/gemini-2.5-pro-preview-03-25" <?php selected(get_option('wcic_openai_model', 'openai/gpt-4o'), 'google/gemini-2.5-pro-preview-03-25'); ?>><?php _e('Google: Gemini 2.5 Pro', 'wc-intelligent-chatbot'); ?></option>
+                            <option value="openrouter/quasar-alpha" <?php selected(get_option('wcic_openai_model', 'openai/gpt-4o'), 'openrouter/quasar-alpha'); ?>><?php _e('OpenRouter: Quasar Alpha', 'wc-intelligent-chatbot'); ?></option>
+                            <option value="mistral/ministral-8b" <?php selected(get_option('wcic_openai_model', 'openai/gpt-4o'), 'mistral/ministral-8b'); ?>><?php _e('Mistral: Ministral 8B', 'wc-intelligent-chatbot'); ?></option>
+                            <option value="anthropic/claude-3-opus" <?php selected(get_option('wcic_openai_model', 'openai/gpt-4o'), 'anthropic/claude-3-opus'); ?>><?php _e('Anthropic: Claude 3 Opus', 'wc-intelligent-chatbot'); ?></option>
+                            <option value="anthropic/claude-3-sonnet" <?php selected(get_option('wcic_openai_model', 'openai/gpt-4o'), 'anthropic/claude-3-sonnet'); ?>><?php _e('Anthropic: Claude 3 Sonnet', 'wc-intelligent-chatbot'); ?></option>
+                        </select>
+                        <p class="description"><?php _e('Select the AI model to use via OpenRouter. Different models have different capabilities and pricing.', 'wc-intelligent-chatbot'); ?></p>
+                        <p><a href="https://openrouter.ai/models" target="_blank" class="button button-secondary"><?php _e('View All OpenRouter Models', 'wc-intelligent-chatbot'); ?></a></p>
                     </td>
                 </tr>
             </table>
