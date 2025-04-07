@@ -152,10 +152,10 @@ if (!defined('WPINC')) {
             ?>
             <table class="form-table">
                 <tr valign="top">
-                    <th scope="row"><?php _e('OpenAI API Key', 'wc-intelligent-chatbot'); ?></th>
+                    <th scope="row"><?php _e('OpenRouter API Key', 'wc-intelligent-chatbot'); ?></th>
                     <td>
                         <input type="password" name="wcic_openai_api_key" value="<?php echo esc_attr(get_option('wcic_openai_api_key', '')); ?>" class="regular-text" />
-                        <p class="description"><?php _e('Your OpenAI API key for AI-powered conversations', 'wc-intelligent-chatbot'); ?></p>
+                        <p class="description"><?php _e('Your OpenRouter API key for AI-powered conversations', 'wc-intelligent-chatbot'); ?></p>
                         <button type="button" class="button button-secondary" id="wcic-test-ai-connection"><?php _e('Test Connection', 'wc-intelligent-chatbot'); ?></button>
                         <span id="wcic-connection-result" style="margin-left: 10px;"></span>
                     </td>
@@ -163,12 +163,9 @@ if (!defined('WPINC')) {
                 <tr valign="top">
                     <th scope="row"><?php _e('AI Model', 'wc-intelligent-chatbot'); ?></th>
                     <td>
-                        <select name="wcic_openai_model">
-                            <option value="gpt-3.5-turbo" <?php selected(get_option('wcic_openai_model', 'gpt-3.5-turbo'), 'gpt-3.5-turbo'); ?>>GPT-3.5 Turbo</option>
-                            <option value="gpt-4" <?php selected(get_option('wcic_openai_model', 'gpt-3.5-turbo'), 'gpt-4'); ?>>GPT-4</option>
-                            <option value="gpt-4-turbo" <?php selected(get_option('wcic_openai_model', 'gpt-3.5-turbo'), 'gpt-4-turbo'); ?>>GPT-4 Turbo</option>
-                        </select>
-                        <p class="description"><?php _e('Select the AI model to use for the chatbot', 'wc-intelligent-chatbot'); ?></p>
+                        <p><strong>openai/gpt-4o</strong> (OpenRouter)</p>
+                        <p class="description"><?php _e('This plugin uses the GPT-4o model via OpenRouter for optimal performance', 'wc-intelligent-chatbot'); ?></p>
+                        <input type="hidden" name="wcic_openai_model" value="openai/gpt-4o" />
                     </td>
                 </tr>
             </table>

@@ -103,7 +103,7 @@ class WCIC_AI_Handler {
     }
 
     /**
-     * Test the connection to the OpenAI API.
+     * Test the connection to the OpenRouter API.
      *
      * @since    1.0.0
      * @param    string    $api_key    The API key to test.
@@ -116,7 +116,7 @@ class WCIC_AI_Handler {
             array('role' => 'user', 'content' => 'Hello, this is a test message. Please respond with "Connection successful."')
         );
         
-        // Call the OpenAI API
+        // Call the OpenRouter API
         $response = $this->call_openai_api($prompt, $api_key);
         
         return $response !== false;
@@ -190,7 +190,7 @@ class WCIC_AI_Handler {
     }
 
     /**
-     * Call the OpenAI API.
+     * Call the OpenRouter API.
      *
      * @since    1.0.0
      * @param    array     $prompt     The prepared prompt.
@@ -201,12 +201,12 @@ class WCIC_AI_Handler {
         // Use provided API key or the stored one
         $api_key = $api_key ?: $this->api_key;
         
-        // API endpoint
-        $url = 'https://api.openai.com/v1/chat/completions';
+        // API endpoint - Using OpenRouter instead of OpenAI directly
+        $url = 'https://openrouter.ai/api/v1/chat/completions';
         
         // Request data
         $data = array(
-            'model' => $this->model,
+            'model' => 'openai/gpt-4o', // Using gpt-4o model from OpenRouter
             'messages' => $prompt,
             'temperature' => 0.7,
             'max_tokens' => 500,
@@ -216,6 +216,8 @@ class WCIC_AI_Handler {
         $headers = array(
             'Content-Type' => 'application/json',
             'Authorization' => 'Bearer ' . $api_key,
+            'HTTP-Referer' => get_site_url(), // Adding site URL as referer for OpenRouter
+            'X-Title' => 'Ezeze Intelligent Chatbot' // Adding title for OpenRouter
         );
         
         // Make the request
@@ -227,7 +229,7 @@ class WCIC_AI_Handler {
         
         // Check for errors
         if (is_wp_error($response)) {
-            error_log('OpenAI API Error: ' . $response->get_error_message());
+            error_log('OpenRouter API Error: ' . $response->get_error_message());
             return false;
         }
         
@@ -236,7 +238,7 @@ class WCIC_AI_Handler {
         $data = json_decode($body, true);
         
         if (empty($data) || !isset($data['choices'][0]['message']['content'])) {
-            error_log('OpenAI API Error: Invalid response - ' . $body);
+            error_log('OpenRouter API Error: Invalid response - ' . $body);
             return false;
         }
         
