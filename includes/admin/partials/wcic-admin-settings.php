@@ -25,8 +25,7 @@ if (!defined('WPINC')) {
         <a href="#advanced-features" class="nav-tab"><?php _e('Advanced Features', 'wc-intelligent-chatbot'); ?></a>
     </h2>
     
-    <form method="post" action="<?php echo admin_url('admin-post.php'); ?>" class="wcic-settings-form">
-    <input type="hidden" name="action" value="save_ezeze_chatbot_settings">
+    <form method="post" action="<?php echo admin_url('options.php'); ?>" class="wcic-settings-form">
         <div id="general-settings" class="wcic-settings-tab">
             <?php
             settings_fields('wcic_general_settings');
@@ -268,6 +267,57 @@ if (!defined('WPINC')) {
                             <?php _e('Enable automatic product suggestions in chat', 'wc-intelligent-chatbot'); ?>
                         </label>
                         <p class="description"><?php _e('Show product suggestions based on user conversation context', 'wc-intelligent-chatbot'); ?></p>
+                        
+                        <div class="wcic-nested-settings" style="margin-top: 15px; padding-left: 20px; border-left: 3px solid #f0f0f0;">
+                            <h4><?php _e('Product Suggestion Settings', 'wc-intelligent-chatbot'); ?></h4>
+                            
+                            <div style="margin-bottom: 10px;">
+                                <label for="wcic_product_suggestions_count">
+                                    <?php _e('Number of products to suggest:', 'wc-intelligent-chatbot'); ?>
+                                </label>
+                                <select name="wcic_product_suggestions_count" id="wcic_product_suggestions_count">
+                                    <option value="3" <?php selected(get_option('wcic_product_suggestions_count', '5'), '3'); ?>>3</option>
+                                    <option value="5" <?php selected(get_option('wcic_product_suggestions_count', '5'), '5'); ?>>5</option>
+                                    <option value="8" <?php selected(get_option('wcic_product_suggestions_count', '5'), '8'); ?>>8</option>
+                                    <option value="10" <?php selected(get_option('wcic_product_suggestions_count', '5'), '10'); ?>>10</option>
+                                </select>
+                            </div>
+                            
+                            <div style="margin-bottom: 10px;">
+                                <label for="wcic_product_suggestions_sort">
+                                    <?php _e('Sort products by:', 'wc-intelligent-chatbot'); ?>
+                                </label>
+                                <select name="wcic_product_suggestions_sort" id="wcic_product_suggestions_sort">
+                                    <option value="relevance" <?php selected(get_option('wcic_product_suggestions_sort', 'relevance'), 'relevance'); ?>><?php _e('Relevance', 'wc-intelligent-chatbot'); ?></option>
+                                    <option value="date" <?php selected(get_option('wcic_product_suggestions_sort', 'relevance'), 'date'); ?>><?php _e('Newest first', 'wc-intelligent-chatbot'); ?></option>
+                                    <option value="price" <?php selected(get_option('wcic_product_suggestions_sort', 'relevance'), 'price'); ?>><?php _e('Price (low to high)', 'wc-intelligent-chatbot'); ?></option>
+                                    <option value="price-desc" <?php selected(get_option('wcic_product_suggestions_sort', 'relevance'), 'price-desc'); ?>><?php _e('Price (high to low)', 'wc-intelligent-chatbot'); ?></option>
+                                    <option value="popularity" <?php selected(get_option('wcic_product_suggestions_sort', 'relevance'), 'popularity'); ?>><?php _e('Popularity', 'wc-intelligent-chatbot'); ?></option>
+                                    <option value="rating" <?php selected(get_option('wcic_product_suggestions_sort', 'relevance'), 'rating'); ?>><?php _e('Rating', 'wc-intelligent-chatbot'); ?></option>
+                                </select>
+                            </div>
+                            
+                            <div style="margin-bottom: 10px;">
+                                <label>
+                                    <input type="checkbox" name="wcic_product_suggestions_show_price" value="yes" <?php checked(get_option('wcic_product_suggestions_show_price', 'yes'), 'yes'); ?> />
+                                    <?php _e('Show product prices', 'wc-intelligent-chatbot'); ?>
+                                </label>
+                            </div>
+                            
+                            <div style="margin-bottom: 10px;">
+                                <label>
+                                    <input type="checkbox" name="wcic_product_suggestions_show_image" value="yes" <?php checked(get_option('wcic_product_suggestions_show_image', 'yes'), 'yes'); ?> />
+                                    <?php _e('Show product images', 'wc-intelligent-chatbot'); ?>
+                                </label>
+                            </div>
+                            
+                            <div style="margin-bottom: 10px;">
+                                <label>
+                                    <input type="checkbox" name="wcic_product_suggestions_add_to_cart" value="yes" <?php checked(get_option('wcic_product_suggestions_add_to_cart', 'yes'), 'yes'); ?> />
+                                    <?php _e('Show "Add to Cart" button', 'wc-intelligent-chatbot'); ?>
+                                </label>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <tr valign="top">

@@ -242,14 +242,62 @@ class WCIC_Public {
             return array();
         }
         
+        // Get product suggestion settings
+        $count = intval(get_option('wcic_product_suggestions_count', '5'));
+        $sort = get_option('wcic_product_suggestions_sort', 'relevance');
+        $show_price = get_option('wcic_product_suggestions_show_price', 'yes') === 'yes';
+        $show_image = get_option('wcic_product_suggestions_show_image', 'yes') === 'yes';
+        $add_to_cart = get_option('wcic_product_suggestions_add_to_cart', 'yes') === 'yes';
+        
+        // Set up orderby parameter based on sort setting
+        $orderby = 'relevance';
+        $order = 'DESC';
+        
+        switch ($sort) {
+            case 'date':
+                $orderby = 'date';
+                $order = 'DESC';
+                break;
+            case 'price':
+                $orderby = 'meta_value_num';
+                $order = 'ASC';
+                $meta_key = '_price';
+                break;
+            case 'price-desc':
+                $orderby = 'meta_value_num';
+                $order = 'DESC';
+                $meta_key = '_price';
+                break;
+            case 'popularity':
+                $orderby = 'meta_value_num';
+                $order = 'DESC';
+                $meta_key = 'total_sales';
+                break;
+            case 'rating':
+                $orderby = 'meta_value_num';
+                $order = 'DESC';
+                $meta_key = '_wc_average_rating';
+                break;
+            default:
+                $orderby = 'relevance';
+                $order = 'DESC';
+                break;
+        }
+        
         // Query products based on keywords
         $args = array(
             'post_type' => 'product',
             'post_status' => 'publish',
-            'posts_per_page' => 5,
+            'posts_per_page' => $count,
             's' => implode(' ', $keywords),
-            'orderby' => 'relevance',
+            'orderby' => $orderby,
+            'order' => $order,
         );
+        
+        // Add meta_key if needed
+        if (isset($meta_key)) {
+            $args['meta_key'] = $meta_key;
+        }
         
         $products_query = new WP_Query($args);
         $suggestions = array();
@@ -264,13 +312,28 @@ class WCIC_Public {
                     continue;
                 }
                 
-                $suggestions[] = array(
+                $suggestion = array(
                     'id' => $product_id,
                     'title' => $product->get_name(),
-                    'price' => $product->get_price_html(),
                     'url' => get_permalink($product_id),
-                    'image' => wp_get_attachment_url($product->get_image_id()) ?: wc_placeholder_img_src(),
                 );
+                
+                // Add price if enabled
+                if ($show_price) {
+                    $suggestion['price'] = $product->get_price_html();
+                }
+                
+                // Add image if enabled
+                if ($show_image) {
+                    $suggestion['image'] = wp_get_attachment_url($product->get_image_id()) ?: wc_placeholder_img_src();
+                }
+                
+                // Add add-to-cart URL if enabled
+                if ($add_to_cart) {
+                    $suggestion['add_to_cart_url'] = $product->add_to_cart_url();
+                }
+                
+                $suggestions[] = $suggestion;
             }
             
             wp_reset_postdata();

@@ -166,6 +166,11 @@
                         // Add bot response to chat
                         this.addMessage(response.data.message, false, response.data.recommendations);
                         
+                        // Add product suggestions if available
+                        if (response.data.product_suggestions && response.data.product_suggestions.length > 0) {
+                            this.addProductSuggestions(response.data.product_suggestions);
+                        }
+                        
                         // Add quick replies if available
                         if (response.data.quick_replies && response.data.quick_replies.length > 0) {
                             this.addQuickReplies(response.data.quick_replies);
@@ -222,6 +227,74 @@
             // Check if the message contains any product keywords
             const lowerMessage = message.toLowerCase();
             return productKeywords.some(keyword => lowerMessage.includes(keyword.toLowerCase()));
+        }
+        
+        /**
+         * Add product suggestions to the chat.
+         * 
+         * @param {Array} products Array of product objects
+         */
+        addProductSuggestions(products) {
+            // Check if product suggestions are enabled
+            if (wcic_params.enable_product_suggestions !== 'yes') {
+                return;
+            }
+            
+            let html = '<div class="wcic-product-suggestions">';
+            html += `<div class="wcic-product-suggestion-title">${wcic_params.i18n.product_suggestions || 'You might be interested in these products:'}</div>`;
+            html += '<div class="wcic-product-carousel">';
+            
+            products.forEach((product, index) => {
+                let productHtml = `
+                    <div class="wcic-product-card" style="animation-delay: ${0.1 + (index * 0.05)}s; opacity: 0; transform: translateY(10px); animation: message-appear 0.3s ease-out forwards;">
+                        <a href="${product.url}" target="_blank" class="wcic-product-card-link">
+                `;
+                
+                // Add image if available
+                if (product.image) {
+                    productHtml += `<img src="${product.image}" alt="${product.title}" class="wcic-product-card-image">`;
+                }
+                
+                productHtml += `
+                        <div class="wcic-product-card-content">
+                            <div class="wcic-product-card-title">${product.title}</div>
+                `;
+                
+                // Add price if available
+                if (product.price) {
+                    productHtml += `<div class="wcic-product-card-price">${product.price}</div>`;
+                }
+                
+                productHtml += `
+                        </div>
+                        </a>
+                `;
+                
+                // Add "Add to Cart" button if available
+                if (product.add_to_cart_url) {
+                    productHtml += `
+                        <a href="${product.add_to_cart_url}" class="wcic-product-add-to-cart" data-product-id="${product.id}">
+                            ${wcic_params.i18n.add_to_cart || 'Add to Cart'}
+                        </a>
+                    `;
+                }
+                
+                productHtml += `</div>`;
+                html += productHtml;
+            });
+            
+            html += '</div></div>';
+            
+            this.chatbotMessages.append(html);
+            this.scrollToBottom();
+            
+            // Add horizontal scroll with mouse wheel
+            $('.wcic-product-carousel').on('wheel', function(e) {
+                if (e.originalEvent.deltaY !== 0) {
+                    e.preventDefault();
+                    $(this).scrollLeft($(this).scrollLeft() + e.originalEvent.deltaY);
+                }
+            });
         }
         
         /**
